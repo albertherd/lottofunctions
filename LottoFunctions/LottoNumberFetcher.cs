@@ -4,14 +4,17 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using LottoFunctions.Data.Models;
 using LottoFunctions.Interfaces;
+using LottoFunctions.Data.Repo;
 
 namespace LottoFunctions
 {
     public class LottoNumberFetcher
     {
         private ILogger<LottoNumberFetcher> _log;
-        public LottoNumberFetcher(ILogger<LottoNumberFetcher> log)
+        private IDrawsRepo _drawsRepo;
+        public LottoNumberFetcher(ILogger<LottoNumberFetcher> log, IDrawsRepo drawsRepo)
         {
+            _drawsRepo = drawsRepo;
             _log = log;
         }
         
