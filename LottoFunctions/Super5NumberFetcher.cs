@@ -18,7 +18,7 @@ namespace LottoFunctions
         }
 
         [FunctionName("Super5NumberFetcher")]
-        public async Task Run([TimerTrigger("30 * 18-23 * * *")]TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer)
         {
             _log.LogInformation($"Super5NumberFetcher - Started Execution on: {DateTime.Now}");
             await _webScraper.ProcessNumbers(DrawType.Super5, "https://www.maltco.com/super/results/do_results.php");

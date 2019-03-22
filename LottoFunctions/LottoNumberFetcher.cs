@@ -16,11 +16,9 @@ namespace LottoFunctions
             _webScraper = webScraper;
             _log = log;
         }
-
-
+        
         [FunctionName("LottoNumberFetcher")]
-        public async Task Run(
-            [TimerTrigger("30 * 18-23 * * *")]TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer)
         {
             _log.LogInformation($"LottoNumberFetcher - Started Execution on: {DateTime.Now}");
             await _webScraper.ProcessNumbers(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
