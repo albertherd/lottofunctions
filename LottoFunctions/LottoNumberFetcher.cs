@@ -11,9 +11,8 @@ namespace LottoFunctions
     {
         private IWebScraper _webScraper;
         private ILogger<LottoNumberFetcher> _log;
-        public LottoNumberFetcher(IWebScraper webScraper, ILogger<LottoNumberFetcher> log)
+        public LottoNumberFetcher(ILogger<LottoNumberFetcher> log)
         {
-            _webScraper = webScraper;
             _log = log;
         }
         
@@ -21,7 +20,7 @@ namespace LottoFunctions
         public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer)
         {
             _log.LogInformation($"LottoNumberFetcher - Started Execution on: {DateTime.Now}");
-            await _webScraper.ProcessNumbers(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
+            //await _webScraper.ProcessNumbers(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
             _log.LogInformation($"LottoNumberFetcher - Finished Execution on: {DateTime.Now}");
         }
     }

@@ -18,7 +18,7 @@ namespace LottoFunctions
         {
             var services = builder.Services;
 
-            services.AddTransient<IWebScraper, WebScraper>();
+            //services.AddTransient<IWebScraper, WebScraper>();
             services.AddTransient<IDrawsRepo, DrawsRepo>();
             services.AddDbContext<LottoContext>(options => options.UseSqlServer(Environment.GetEnvironmentVariable("sqldb_connection")), ServiceLifetime.Transient);
         }
