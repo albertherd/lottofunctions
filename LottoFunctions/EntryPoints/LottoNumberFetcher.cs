@@ -22,7 +22,7 @@ namespace LottoFunctions
         }
         //"0 */15 18-21 * * *"
         [FunctionName("LottoNumberFetcher")]
-        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer,
+        public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer,
             [Queue("facebook", Connection = "AzureWebJobsStorage")] IAsyncCollector<Draw> facebookQueue,
             [Queue("database", Connection = "AzureWebJobsStorage")] IAsyncCollector<Draw> databaseQueue)
         {
