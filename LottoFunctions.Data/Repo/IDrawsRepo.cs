@@ -1,5 +1,4 @@
 ﻿using LottoFunctions.Data.Models;
-using Microsoft.Azure.WebJobs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +10,6 @@ namespace LottoFunctions.Data.Repo
     {
         Task<bool> DrawExists(int drawType, int drawNo);
         Task AddDraw(Draw draw);
-        Task EnqueueDraw(Draw draw, params IAsyncCollector<Draw>[] queues);
         Task SaveChanges();
     }
 }

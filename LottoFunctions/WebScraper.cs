@@ -56,10 +56,15 @@ namespace LottoFunctions
 
         private List<int> GetNumbers()
         {
-            HtmlNode resultsDiv = _htmlDocument.GetElementbyId("draw_holder_results_numbers");
-            HtmlNode centerElement = resultsDiv.ChildNodes.Where(node => node.Name.Equals("center")).FirstOrDefault();
-            return centerElement.ChildNodes.Where(node => node.Id.Equals("number_style")).ToList()
-                .Select(node => Convert.ToInt32(CleanupString(node.InnerText))).ToList();
+            List<int> result = new List<int>();
+
+            foreach (HtmlNode node in _htmlDocument.DocumentNode.SelectNodes("//div")
+                .Where(div => div.Id.Equals("number_style_quaterno") || div.Id.Equals("number_style")))
+            {
+                result.Add(Convert.ToInt32(CleanupString(node.InnerText)));
+            }
+            
+            return result;
         }
 
         private DateTime GetDrawDate()
