@@ -21,6 +21,7 @@ namespace LottoFunctions.EntryPoints
         {
             log.LogInformation($"C# Queue trigger function processed");
             await _drawsRepo.AddDraw(draw);
+            await _drawsRepo.SaveChanges();
         }
     }
 }

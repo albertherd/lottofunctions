@@ -23,13 +23,13 @@ namespace LottoFunctions
 
         //"0 */15 18-21 * * *
         [FunctionName("Super5NumberFetcher")]
-        public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer,
+        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer,
             [Queue("facebook", Connection = "AzureWebJobsStorage")] IAsyncCollector<Draw> facebookQueue,
             [Queue("database", Connection = "AzureWebJobsStorage")] IAsyncCollector<Draw> databaseQueue)
         {
             _log.LogInformation($"LottoNumberFetcher - Started Execution on: {DateTime.Now}");
 
-            Draw draw = await _webScraper.GetDraw(DrawType.Lotto, "https://www.maltco.com/super/results/do_results.php");
+            Draw draw = await _webScraper.GetDraw(DrawType.Super5, "https://www.maltco.com/super/results/do_results.php");
             if (!await _drawsRepo.DrawExists(draw.DrawType, draw.DrawNo))
             {
                 await facebookQueue.AddAsync(draw);
