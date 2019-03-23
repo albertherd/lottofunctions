@@ -23,16 +23,16 @@ namespace LottoFunctions
         
         [FunctionName("LottoNumberFetcher")]
         public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer,
-            [Queue("facebookQueue")] ICollector<Draw> facebookQueue,
-            [Queue("databaseQueue")] ICollector<Draw> databaseQueue)
+            [Queue("facebookQueue")] ICollector<string> facebookQueue,
+            [Queue("databaseQueue")] ICollector<string> databaseQueue)
         {
             _log.LogInformation($"LottoNumberFetcher - Started Execution on: {DateTime.Now}");
 
             Draw draw = await _webScraper.GetDraw(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
             if(!await _drawsRepo.DrawExists(draw.DrawType, draw.DrawNo))
             {
-                facebookQueue.Add(draw);
-                databaseQueue.Add(draw);
+                facebookQueue.Add(Newtonsoft.Json.JsonConvert.SerializeObject(draw));
+                databaseQueue.Add(Newtonsoft.Json.JsonConvert.SerializeObject(draw));
             }
 
 
