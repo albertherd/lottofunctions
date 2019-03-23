@@ -15,24 +15,8 @@ namespace LottoFunctions
     {
         private HtmlDocument _htmlDocument;
         private static HttpClient _httpClient = new HttpClient();
-        private IDrawsRepo _drawsRepo;
 
-        public WebScraper (IDrawsRepo drawsRepo)
-        {
-            _drawsRepo = drawsRepo;
-        }
-
-        public async Task ProcessNumbers(DrawType drawType, string resultsUrl)
-        {
-            Draw draw = await GetDrawFrom(drawType, resultsUrl);
-            if (!await DrawExistsInDb(drawType, draw.DrawNo))
-            {
-                await _drawsRepo.AddDraw(draw);
-                await _drawsRepo.SaveChanges();
-            }
-        }
-
-        private async Task<Draw> GetDrawFrom(DrawType drawType, string resultsUrl)
+        public async Task<Draw> GetDraw(DrawType drawType, string resultsUrl)
         {
             string html = await GetHtmlAsString(resultsUrl);
             _htmlDocument = GetHtmlDocument(html);
@@ -54,18 +38,12 @@ namespace LottoFunctions
             return draw;
         }
 
-        private async Task<bool> DrawExistsInDb(DrawType drawType, int drawNumber)
-        {
-            return await _drawsRepo.DrawExists(drawType, drawNumber);
-        }
-
         private async Task<string> GetHtmlAsString(string resultsUrl)
         {
             Dictionary<string, string> formContent = new Dictionary<string, string>();
             formContent.Add("LoadData", "LoadData");
             var postRequest = await _httpClient.PostAsync(resultsUrl, new FormUrlEncodedContent(formContent));
             string result = await postRequest.Content.ReadAsStringAsync();
-            //_log.LogInformation($"Fetched HTML from {resultsUrl}");
             return result;
         }
 

@@ -8,6 +8,6 @@ namespace LottoFunctions.Interfaces
 {
     public interface IWebScraper
     {
-        Task ProcessNumbers(DrawType drawType, string resultsUrl);
+        Task<Draw> GetDraw(DrawType drawType, string resultsUrl);
     }
 }

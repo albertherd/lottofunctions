@@ -20,7 +20,7 @@ namespace LottoFunctions.Data.Repo
             await _lottoContext.Draws.AddAsync(draw);            
         }
 
-        public async Task<bool> DrawExists(DrawType drawType, int drawNo)
+        public async Task<bool> DrawExists(int drawType, int drawNo)
         {
             return await _lottoContext.Draws.Where(draw => draw.DrawType.Equals((int)drawType) && draw.DrawNo.Equals(drawNo)).AnyAsync();
         }

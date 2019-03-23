@@ -8,20 +8,22 @@ using LottoFunctions.Interfaces;
 namespace LottoFunctions
 {
     public class Super5NumberFetcher
-    {
-        private IWebScraper _webScraper;
+    {        
         private ILogger<Super5NumberFetcher> _log;
-        public Super5NumberFetcher(ILogger<Super5NumberFetcher> log)
+        private IWebScraper _webScraper;
+
+        public Super5NumberFetcher(IWebScraper webScraper, ILogger<Super5NumberFetcher> log)
         {
+            _webScraper = webScraper;
             _log = log;
         }
 
         [FunctionName("Super5NumberFetcher")]
         public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer)
         {
-            _log.LogInformation($"Super5NumberFetcher - Started Execution on: {DateTime.Now}");
-            //await _webScraper.ProcessNumbers(DrawType.Super5, "https://www.maltco.com/super/results/do_results.php");
-            _log.LogInformation($"Super5NumberFetcher - Finished Execution on: {DateTime.Now}");
+/*            _log.LogInformation($"Super5NumberFetcher - Started Execution on: {DateTime.Now}");
+            await _webScraper.ProcessNumbers(DrawType.Super5, "https://www.maltco.com/super/results/do_results.php");
+            _log.LogInformation($"Super5NumberFetcher - Finished Execution on: {DateTime.Now}");*/
         }
     }
 }

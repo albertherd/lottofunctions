@@ -11,19 +11,31 @@ namespace LottoFunctions
     public class LottoNumberFetcher
     {
         private ILogger<LottoNumberFetcher> _log;
+        private IWebScraper _webScraper;
         private IDrawsRepo _drawsRepo;
-        public LottoNumberFetcher(ILogger<LottoNumberFetcher> log, IDrawsRepo drawsRepo)
+
+        public LottoNumberFetcher(ILogger<LottoNumberFetcher> log, IWebScraper webScraper, IDrawsRepo drawsRepo)
         {
-            _drawsRepo = drawsRepo;
+            _webScraper = webScraper;
             _log = log;
+            _drawsRepo = drawsRepo;
         }
         
         [FunctionName("LottoNumberFetcher")]
-        public async Task Run([TimerTrigger("0 */15 18-21 * * *")]TimerInfo myTimer)
+        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer,
+            [Queue("facebookQueue")] ICollector<Draw> facebookQueue,
+            [Queue("databaseQueue")] ICollector<Draw> databaseQueue)
         {
-            _log.LogCritical($"lol");
             _log.LogInformation($"LottoNumberFetcher - Started Execution on: {DateTime.Now}");
-            //await _webScraper.ProcessNumbers(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
+
+            Draw draw = await _webScraper.GetDraw(DrawType.Lotto, "https://www.maltco.com/lotto/results/do_results.php");
+            if(!await _drawsRepo.DrawExists(draw.DrawType, draw.DrawNo))
+            {
+                facebookQueue.Add(draw);
+                databaseQueue.Add(draw);
+            }
+
+
             _log.LogInformation($"LottoNumberFetcher - Finished Execution on: {DateTime.Now}");
         }
     }
